@@ -15,6 +15,7 @@ export default function RootLayout({
                     style = {{
                         backgroundColor: "lightblue",
                         padding: "1rem",
+                        minHeight: "5vh"
                     }}
                 >
                     <p>Pulse Room</p>
@@ -23,7 +24,8 @@ export default function RootLayout({
                 <footer
                     style={{
                         background: "grey",
-                        padding: "1rem"
+                        padding: "1rem",
+                        minHeight: "5vh"
                     }}
                 >
                     <p>Footer</p>

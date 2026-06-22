@@ -1,10 +1,9 @@
+import RoomLobby from "@/components/RoomLobby";
+
 export default function Home (){
     return(
         <>
-            <p>
-                Room Based Chat Application.
-                Chat with strangers and become friends.
-            </p>
+            <RoomLobby />
         </>
     )
 }

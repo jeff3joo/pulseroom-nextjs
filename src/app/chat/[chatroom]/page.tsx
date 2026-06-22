@@ -1,4 +1,18 @@
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+import ChatPage from "@/components/ChatPage";
+
+type Props = {
+    params: Promise<{chatroom: string}> 
+}
+
+export const generateMetadata = async({params}: Props): Promise<Metadata> => {
+    const {chatroom} = await params;
+    return {
+        title: `ChatRoom | ${chatroom}`,
+    }
+}
+
 
 export default async function ChatRoom ({
     params, 
@@ -18,9 +32,7 @@ export default async function ChatRoom ({
 
     return(
         <>
-            <p>
-                ChatRoom {chatroom}
-            </p>
+            <ChatPage room={chatroom} />
         </>
     )
 }
