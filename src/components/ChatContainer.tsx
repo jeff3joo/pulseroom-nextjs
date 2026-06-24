@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { Box } from "@mui/material";
@@ -6,20 +6,20 @@ import { getChats } from "@/services/chats.service";
 import { Chat } from "@/types/chat";
 import { MessageBubble } from "./MessageBubble";
 
-export function ChatContainer({ room }: {room:string}) {
+export function ChatContainer({ room }: { room: string }) {
 	const chatContainerRef = useRef(null);
 
-    const [chat, setChat ] = useState<Chat[]>([]);
+	const [chat, setChat] = useState<Chat[]>([]);
 
-    useEffect(()=>{
-        loadChat(room)
-    })
+	useEffect(() => {
+		loadChat(room);
+	});
 
-    const loadChat = async(room:string) =>{
-        let chats = await getChats(room)
-        if (!chats) return;
-        setChat(chats);
-    }
+	const loadChat = async (room: string) => {
+		let chats = await getChats(room);
+		if (!chats) return;
+		setChat(chats);
+	};
 
 	return (
 		<Box

@@ -7,17 +7,16 @@ import { sendMessage } from "@/services/chats.service";
 import { Chat } from "@/types/chat";
 
 export default function ChatPage({ room }: { room: string }) {
+	const [message, setMessage] = useState("");
 
-    const [message, setMessage] = useState("");
-
-    const onSend = () => {
-        let msg: Chat = {
-            username: "person1", //hardcoded
-            message: message,
-            timestamp: new Date(),
-        };
-        sendMessage(room, msg);
-    }
+	const onSend = () => {
+		let msg: Chat = {
+			username: "person1", //hardcoded
+			message: message,
+			timestamp: new Date(),
+		};
+		sendMessage(room, msg);
+	};
 
 	return (
 		<div>

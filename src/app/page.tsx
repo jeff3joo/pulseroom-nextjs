@@ -1,9 +1,9 @@
-import RoomLobby from "@/components/RoomLobby";
+import LandingPage from "@/components/LandingPage";
 
-export default function Home (){
-    return(
-        <>
-            <RoomLobby />
-        </>
-    )
+export default function Home() {
+	return (
+		<>
+			<LandingPage />
+		</>
+	);
 }

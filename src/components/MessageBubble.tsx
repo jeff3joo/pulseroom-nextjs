@@ -1,7 +1,13 @@
 import { Chat } from "@/types/chat";
 import { Box, Typography } from "@mui/material";
 
-export function MessageBubble({ message, isOwn }: {message:Chat, isOwn: boolean}) {
+export function MessageBubble({
+	message,
+	isOwn,
+}: {
+	message: Chat;
+	isOwn: boolean;
+}) {
 	return (
 		<Box
 			style={{
