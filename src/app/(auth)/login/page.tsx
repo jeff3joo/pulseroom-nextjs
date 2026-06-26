@@ -3,13 +3,23 @@
 import { Button, TextField } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
+import { validateLogin } from "@/services/user.service";
 
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [showError, setShowError] = useState(false);
+	const [errorMsg, setErrorMsg] = useState("");
 
-	const loginUser = () => {
+	const loginUser = async () => {
 		console.log("Logging user", email, password);
+		if (await !validateLogin(email, password)) {
+			setErrorMsg("Invalid email or password");
+			setShowError(true);
+		}
+
+		setErrorMsg("");
+		setShowError(false);
 	};
 
 	const onForgotPassword = () => {
@@ -40,6 +50,7 @@ export default function Login() {
 			<Button onClick={onForgotPassword}>
 				<Link href='/forgot-password'>Forgot Password</Link>
 			</Button>
+			{showError && <p>{errorMsg}</p>}
 		</>
 	);
 }

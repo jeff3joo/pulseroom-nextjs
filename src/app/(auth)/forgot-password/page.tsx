@@ -2,17 +2,42 @@
 
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
+import { validateEmail, updatePassword } from "@/services/user.service";
 
 export default function ForgotPassword() {
 	const [email, setEmail] = useState("");
 	const [otp, setOtp] = useState("");
 	const [newPassword, setNewPassword] = useState("");
+	const [showError, setShowError] = useState(false);
+	const [errorMsg, setErrorMsg] = useState("");
 
-	const getOTP = () => {
+	const getOTP = async () => {
+		if (await !validateEmail(email)) {
+			setShowError(true);
+			setErrorMsg("Invalid email");
+			return;
+		}
+		setShowError(false);
+		setErrorMsg("");
+
+		//OTP Logic to be added
 		console.log("Forgot password");
 	};
 
-	const updatePassword = () => {
+	const updateNewPassword = async () => {
+		if (otp.length !== 6) {
+			setShowError(true);
+			setErrorMsg("Invalid OTP");
+			return;
+		}
+		if (await !updatePassword(email, newPassword, otp)) {
+			setShowError(true);
+			setErrorMsg("Invalid OTP");
+			return;
+		}
+
+		setShowError(false);
+		setErrorMsg("");
 		console.log("Updating password");
 	};
 
@@ -46,7 +71,8 @@ export default function ForgotPassword() {
 				fullWidth
 				size='small'
 			/>
-			<Button onClick={updatePassword}>Update Password</Button>
+			<Button onClick={updateNewPassword}>Update Password</Button>
+			{showError && <p>{errorMsg}</p>}
 		</>
 	);
 }
