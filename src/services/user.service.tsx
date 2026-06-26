@@ -1,3 +1,8 @@
+let user = {
+	name: "Dummy",
+	email: "dumm@gmail.com"
+}
+
 export const validateLogin = async (email: string, password: string) => {
 	try {
 		const response = await fetch("/api/auth/login", {
@@ -91,4 +96,8 @@ export const validateEmail = async (email: string) => {
 		console.log(error);
 		return false;
 	}
+};
+
+export const getUserName = async () => {
+	return user.name;
 };

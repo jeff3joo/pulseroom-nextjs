@@ -5,11 +5,28 @@ import { Box } from "@mui/material";
 import { getChats } from "@/services/chats.service";
 import { Chat } from "@/types/chat";
 import { MessageBubble } from "./MessageBubble";
+import { useChatEvents } from "@/socket/chat.events";
 
 export function ChatContainer({ room }: { room: string }) {
 	const chatContainerRef = useRef(null);
 
 	const [chat, setChat] = useState<Chat[]>([]);
+	const [typingUser, setTypingUser] = useState<any>(null);
+
+	useChatEvents({
+		onReceiveMessage : (data:any)=>{
+			setChat((prev) => [...prev, data]);
+		},
+		onUserTyping : (user : string) => {
+			setTypingUser(user);
+		},
+		onUserStopTyping : () => {
+			setTypingUser(null);
+		},
+		onUserJoined : (user : string) => {
+
+		}
+	})
 
 	useEffect(() => {
 		loadChat(room);
@@ -61,6 +78,16 @@ export function ChatContainer({ room }: { room: string }) {
 						),
 					)}
 				</>
+			)}
+			{typingUser && (
+				<Box
+					style={{
+						color: "#999",
+						marginTop: "10px",
+					}}
+				>
+					{typingUser} is typing...
+				</Box>
 			)}
 		</Box>
 	);

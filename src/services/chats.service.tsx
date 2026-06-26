@@ -1,4 +1,6 @@
 import { Chat } from "@/types/chat";
+import { getUserName } from "./user.service";
+import { socket } from "@/socket/socket";
 
 const chats: Record<string, Chat[]> = {
 	room1: [
@@ -40,16 +42,22 @@ export const getChats = async (
 
 export const sendMessage = async (
 	roomNumber: string,
-	chat: Chat,
+	message: string,
 ): Promise<void> => {
 	if (!chats[roomNumber]) {
 		chats[roomNumber] = [];
 	}
-	console.log("Sending message to room " + roomNumber + ": ", chat);
-	chats[roomNumber].push(chat);
+	console.log("Sending message to room " + roomNumber + ": ", message);
+
+	const username = getUserName();
+	socket.emit("send_message", {
+		username,
+		roomNumber,
+		message,
+	});
 };
 
-export const getUsers = async (roomNumber: string) => {
-	// Dummy implementation
-	return ["user1", "user2", "user3"];
+export const typing = async (roomNumber: string) => {
+	const username = getUserName();
+	socket.emit("typing", { username, roomNumber });
 };

@@ -1,5 +1,6 @@
 "use client";
 import * as roomsService from "@/services/rooms.service";
+import { useRoomUsersEvent } from "@/socket/room.event";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,9 +9,15 @@ export default function RoomLobby() {
 	const router = useRouter();
 
 	const [roomName, setRoomName] = useState("");
-
-	const [showError, setShowError] = useState(false);
 	const [errorMsg, setErronMsg] = useState("");
+	const [showError, setShowError] = useState(false);
+	const [roomList, setRoomList] = useState<string[]>([]);
+
+	useRoomUsersEvent({
+		onRoomUsers:(users:string[]) => {
+			setRoomList(users);
+		}
+	})
 
 	const handleRoomAction = async (
 		room: string,
@@ -29,11 +36,6 @@ export default function RoomLobby() {
 			setError(true, error.message || "Something went wrong");
 			return false;
 		}
-	};
-
-	const onCreateRoom = async (room: string) => {
-		const status = await handleRoomAction(room, roomsService.createRoom);
-		if (status) onJoinRoom(room);
 	};
 
 	const onJoinRoom = async (room: string) => {
@@ -63,12 +65,22 @@ export default function RoomLobby() {
 						label='Room Name'
 						onChange={(e) => setRoomName(e.target.value)}
 					/>
-					<Button onClick={() => onCreateRoom(roomName)}>Create a Room</Button>
-					<Button onClick={() => onJoinRoom(roomName)}>Join a Room</Button>
+					<Button onClick={() => onJoinRoom(roomName)}>Create/Join</Button>
 				</Grid>
 				{showError && (
 					<Grid size={12}>
 						<Box sx={{ color: "red" }}>{errorMsg}</Box>
+					</Grid>
+				)}
+				{roomList && (
+					<Grid size={12}>
+						<Typography>Rooms Available</Typography>
+						{roomList.map((room, index) => (
+							<Box key={index}>
+								{room}
+								<Button onClick={() => onJoinRoom(room)}>Join</Button>
+							</Box>
+						))}
 					</Grid>
 				)}
 			</Grid>

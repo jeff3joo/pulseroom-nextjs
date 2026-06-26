@@ -4,25 +4,27 @@ import { Button, Grid, TextField } from "@mui/material";
 import { ChatContainer } from "@/components/ChatContainer";
 import { useState } from "react";
 import { sendMessage } from "@/services/chats.service";
-import { Chat } from "@/types/chat";
+import { useRoomUsersEvent } from "@/socket/room.event";
 
 export default function ChatPage({ room }: { room: string }) {
 	const [message, setMessage] = useState("");
+	const [users,setUsers] = useState<string[]>([]);
+
+	useRoomUsersEvent({
+		onRoomUsers:(users:string[]) => {
+			setUsers(users);
+		}
+	})
 
 	const onSend = () => {
-		let msg: Chat = {
-			username: "person1", //hardcoded
-			message: message,
-			timestamp: new Date(),
-		};
-		sendMessage(room, msg);
+		sendMessage(room, message);
 	};
 
 	return (
 		<div>
 			<Grid container size={12}>
 				<Grid size={3}>
-					<UserList room={room} />
+					<UserList room={room} users={users}/>
 				</Grid>
 				<Grid size={8}>
 					<ChatContainer room={room} />

@@ -1,21 +1,8 @@
 "use client";
 
-import { getUsers } from "@/services/chats.service";
-import { Box, Paper, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Paper, Typography } from "@mui/material";
 
-export function UserList({ room, flex = 1 }: { room: string; flex?: number }) {
-	const [users, setUsers] = useState<string[]>([]);
-
-	const loadUsers = async () => {
-		let userList = await getUsers(room);
-		setUsers(userList);
-	};
-
-	useEffect(() => {
-		loadUsers();
-	}, []);
-
+export function UserList({ room, users, flex = 1 }: { room: string; users: string[];flex?: number }) {
 	return (
 		<Paper
 			sx={{
